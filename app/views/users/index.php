@@ -19,10 +19,8 @@
                         <td><?php echo $user['name']; ?></td>
                         <td><?php echo $user['email']; ?></td>
                         <td>
-                            <a href="/users/edit/<?php echo $user['id']; ?>" class="btn btn-warning">Edit</a>
-                            <form action="/users/destroy/<?php echo $user['id']; ?>" method="POST" style="display:inline;">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
+                            <a href="http://localhost/2026/PHP_MVC_PDO_API/public/users/edit/<?php echo $user['id']; ?>" class="btn btn-warning">Edit</a>
+                            <a href="http://localhost/2026/PHP_MVC_PDO_API/public/users/delete/<?php echo $user['id']; ?>" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

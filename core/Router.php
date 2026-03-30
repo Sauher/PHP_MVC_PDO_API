@@ -36,6 +36,11 @@
            $url = parse_url($url, PHP_URL_PATH);
            $url = trim($url, '/') ?: '/';
 
+           // Method spoofing: allow _method override from POST forms
+           if ($method === 'POST' && isset($_POST['_method'])) {
+               $method = strtoupper($_POST['_method']);
+           }
+
            $routesForMethod = $this->routes[$method] ?? [];
            foreach ( $routesForMethod as $route){
                $routeUrl = trim($route['url'], '/') ?: '/';

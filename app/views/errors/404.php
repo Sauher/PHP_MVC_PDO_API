@@ -11,6 +11,6 @@
 <body>
     <h1>404 Not Found</h1>
     <p>Az oldal, amit keresel, nem található.</p>
-    <a href="/users">Vissza a felhasználókhoz</a>
+    <a href="http://localhost/2026/PHP_MVC_PDO_API/public/users">Vissza a felhasználókhoz</a>
 </body>
 </html>

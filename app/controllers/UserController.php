@@ -48,24 +48,29 @@ class UserController extends BaseController
     public function edit($id)
     {
         $user = $this->userModel->find($id);
-        // Load view and pass user
+        $this->render('users', 'edit', ['user' => $user]);
     }
 
     public function update($id)
     {
-        // Validate and update user
+        $data = [
+            'name' => $_POST['name'],
+            'email' => $_POST['email']
+        ];
+        $this->userModel->update($id, $data);
+        $this->redirect($this->redirectPath);
     }
 
     public function delete($id)
     {
-        $user = $this->userModel->delete($id);
-
+        $user = $this->userModel->find($id);
+        $this->render('users', 'delete', ['user' => $user]);
     }
 
     public function destroy($id)
     {
         $this->userModel->destroy($id);
-        // Redirect or load view
+        $this->redirect($this->redirectPath);
     }
 
 }
