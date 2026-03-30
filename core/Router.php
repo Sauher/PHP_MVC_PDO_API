@@ -29,14 +29,47 @@
 
         public function dispatch($method, $url)
         {
-           $url = parse_url($url, PHP_URL_PATH);
+           $baseurl = '/2026/PHP_MVC_PDO_API/public';
 
-           foreach ($this->routes[$method] as $route) {
-               if ($route['url'] === $url) {
-                   call_user_func($route['action']);
-                   return;
-               }
+           $url = str_replace($baseurl, '', $url);
+
+           $url = parse_url($url, PHP_URL_PATH);
+           $url = trim($url, '/') ?: '/';
+
+           $routesForMethod = $this->routes[$method] ?? [];
+           foreach ( $routesForMethod as $route){
+               $routeUrl = trim($route['url'], '/') ?: '/';
+               $pattern = preg_replace('#:([\w]+)#', '([^/]+)', $routeUrl);
+               $pattern = '#^' . $pattern . '$#';
+
+                if (preg_match($pattern, $url, $matches)){
+                    array_shift($matches);
+                    $action = $route['action'];
+                    if (is_array($action)){
+                        $controllerName = $action[0];
+                        $methodName = $action[1];
+                        $controller = new $controllerName();
+                        call_user_func_array([$controller, $methodName], $matches);
+                        return;
+                    }
+
+                    if(is_callable($action)){
+                        call_user_func_array($action, $matches);
+                        return;
+                    }
+                }
            }
+
+           http_response_code(404);
+
+           $viewPath = __DIR__ . '/../app/views/errors/404.php';
+           if (is_file($viewPath))
+           {
+              require $viewPath;
+              return;
+           }
+
+           echo "404 Not Found";
         }
     }
 

@@ -7,7 +7,7 @@
 
 
     class DataBase{
-        private PDO $pdo;
+        public $pdo;
 
         public function __construct(){
             $this->connect();
@@ -32,6 +32,13 @@
             } catch (PDOException $e) {
                 echo "Connection failed: " . $e->getMessage();
             }
+        }
+
+        public function query(string $sql, array $params = [])
+        {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute($params);
+            return $stmt;
         }
     }
 ?>

@@ -1,21 +1,25 @@
 <?php
 
     require_once (__DIR__ . '/../models/User.php');
+    require_once (__DIR__ . '/BaseController.php');
 
-class UserController
+class UserController extends BaseController
 {
  
     private $userModel;
+    private $redirectPath = '/2026/PHP_MVC_PDO_API/public/users';
 
     public function __construct()
     {
         $this->userModel = new User();
     }
 
+    
+
     public function index()
     {
         $users = $this->userModel->all();
-        // Load view and pass users
+       $this->render('users', 'index', ['users' => $users]);
     }
 
     public function show($id)
@@ -27,11 +31,18 @@ class UserController
     public function create()
     {
         // Load view for creating user
+        $this->render('users', 'create');
     }
 
     public function store()
     {
-        // Validate and store new user
+        $data = [
+            'name' => $_POST['name'],
+            'email' => $_POST['email'],
+            'password' => sha1($_POST['password'])
+        ];
+        $this->userModel->create($data);
+        $this->redirect($this->redirectPath);
     }
 
     public function edit($id)
